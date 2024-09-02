@@ -1,6 +1,8 @@
 package org.amoseman.primeproject;
 
+import org.amoseman.primeproject.discovery.BasicPrimeFinder;
 import org.amoseman.primeproject.discovery.PrimeFinder;
+import org.amoseman.primeproject.discovery.ThreadedPrimeFinder;
 import org.amoseman.primeproject.engine.Engine;
 import org.amoseman.primeproject.storage.init.DatabaseConnection;
 import org.amoseman.primeproject.storage.init.DatabaseInitializer;
@@ -19,10 +21,10 @@ public class Main {
         DatabaseInitializer<DSLContext> initializer = new SQLDatabaseInitializer(connection);
         initializer.init();
         PrimeDAO primeDAO = new SQLPrimeDAO(connection);
-        PrimeService primeService = new CachedPrimeService(64_000, 1600, primeDAO);
-        PrimeFinder finder = new PrimeFinder(primeService);
+        PrimeService primeService = new CachedPrimeService(64_000, 32_000, primeDAO);
+        PrimeFinder finder = new ThreadedPrimeFinder(primeService, 10, 2_000);
 
-        Engine engine = new Engine(finder, 256);
+        Engine engine = new Engine(finder, 20_000);
         Thread thread = new Thread(engine);
         thread.start();
         UI.run(engine, primeDAO);

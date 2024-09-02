@@ -1,6 +1,8 @@
 package org.amoseman.primeproject.storage;
 
+import org.amoseman.primeproject.discovery.BasicPrimeFinder;
 import org.amoseman.primeproject.discovery.PrimeFinder;
+import org.amoseman.primeproject.discovery.ThreadedPrimeFinder;
 import org.amoseman.primeproject.storage.dao.PrimeDAO;
 import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
 import org.amoseman.primeproject.storage.init.DatabaseConnection;
@@ -76,7 +78,7 @@ class PrimeFinderTest {
         }
 
         PrimeService service = new CachedPrimeService(69, 36, dao);
-        PrimeFinder finder = new PrimeFinder(service);
+        PrimeFinder finder = new ThreadedPrimeFinder(service, 4, 10);
         finder.find(count - 2);
         // compare actual to expected
         List<BigInteger> actualService = service.get(0, count);
