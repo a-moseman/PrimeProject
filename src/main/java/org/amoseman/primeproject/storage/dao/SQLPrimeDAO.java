@@ -13,6 +13,7 @@ import static org.jooq.impl.DSL.table;
 
 public class SQLPrimeDAO implements PrimeDAO {
     private final Table<Record> PRIMES = table("primes");
+    private final Field<Object> ID = field("id");
     private final Field<Object> VALUE = field("value");
     private final DatabaseConnection<DSLContext> connection;
 
@@ -63,10 +64,12 @@ public class SQLPrimeDAO implements PrimeDAO {
 
     @Override
     public List<BigInteger> get(long offset, long length) {
+        Condition range = ID.greaterOrEqual(offset + 1).and(ID.lessThan(offset + length + 1));
         Result<Record> result = connection.get()
                 .selectFrom(PRIMES)
-                .limit(length)
-                .offset(offset)
+                .where(range)
+                //.limit(length)
+                //.offset(offset)
                 .fetch();
         List<BigInteger> primes = new ArrayList<>();
         result.forEach(record -> {

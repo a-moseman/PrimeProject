@@ -4,8 +4,7 @@ import org.jooq.DSLContext;
 
 import java.math.BigInteger;
 
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
+import static org.jooq.impl.DSL.*;
 import static org.jooq.impl.SQLDataType.*;
 
 public class SQLDatabaseInitializer extends DatabaseInitializer<DSLContext> {
@@ -18,7 +17,11 @@ public class SQLDatabaseInitializer extends DatabaseInitializer<DSLContext> {
         boolean empty = connection.get().meta().getTables().isEmpty();
         connection.get()
                 .createTableIfNotExists("primes")
+                .column(field("id"), BIGINTUNSIGNED.identity(true))
                 .column(field("value"), BLOB)
+                .constraints(
+                        primaryKey(field("id"))
+                )
                 .execute();
         connection.get()
                 .createTableIfNotExists("last")

@@ -1,14 +1,14 @@
-package org.amoseman.primeproject;
+package org.amoseman.primeproject.engine;
 
 import org.amoseman.primeproject.discovery.PrimeFinder;
 
-public class Processor implements Runnable {
+public class Engine implements Runnable {
     private final PrimeFinder finder;
     private final int batchSize;
     private final int chunkSize;
     private boolean running;
 
-    public Processor(PrimeFinder finder, int batchSize, int chunkSize) {
+    public Engine(PrimeFinder finder, int batchSize, int chunkSize) {
         this.finder = finder;
         this.batchSize = batchSize;
         this.chunkSize = chunkSize;
