@@ -11,40 +11,50 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class PrimeFinderTest {
+    /**
+     * Generate primes to test against.
+     * DO NOT MODIFY.
+     * @param count the number of primes to generate.
+     * @return the primes.
+     */
+    private List<Integer> generateExpectedPrimes(final int count) {
+        List<Integer> primes = new ArrayList<>();
+        primes.add(2);
+        primes.add(3);
+        int current = 3;
+        while (primes.size() < count) {
+            current += 2;
+            if (isPrime(primes, current)) {
+                primes.add(current);
+            }
+        }
+        return primes;
+    }
+
+    /**
+     * Check the primality of a number.
+     * @param primes the primes to use in the check.
+     * @param number the number to check.
+     * @return the primality of the number.
+     */
+    private boolean isPrime(List<Integer> primes, int number) {
+        double sqrt = Math.sqrt(number);
+        for (int i = 1; i < primes.size(); i++) {
+            int prime = primes.get(i);
+            if (prime > sqrt) {
+                return true;
+            }
+            if (number % prime == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Test
     void test() {
         int count = 200;
-        /**
-         * BELOW THIS IS CODE THAT SHOULD NOT CHANGE.
-         * IT MUST GENERATE VALID PRIME NUMBERS IN ORDER.
-         */
-        List<Integer> expected = new ArrayList<>();
-        expected.add(2);
-        expected.add(3);
-        int current = 3;
-        while (expected.size() < count) {
-            current += 2;
-            int sqrt = (int) (Math.sqrt(current) + 0.5);
-            boolean isPrime = true;
-            for (int i = 1; i < expected.size(); i++) {
-                int prime = expected.get(i);
-                if (prime > sqrt) {
-                    break;
-                }
-                if (current % prime == 0) {
-                    isPrime = false;
-                    break;
-                }
-            }
-            if (isPrime) {
-                expected.add(current);
-            }
-        }
-        /**
-         * ABOVE THIS IS CODE THAT SHOULD NOT CHANGE.
-         * IT MUST GENERATE VALID PRIME NUMBERS IN ORDER.
-         */
+        List<Integer> expected = generateExpectedPrimes(count);
         new File("test.db").deleteOnExit();
         DatabaseConnection connection = new DatabaseConnection("jdbc:sqlite:test.db");
         DatabaseInitializer initializer = new DatabaseInitializer(connection);
