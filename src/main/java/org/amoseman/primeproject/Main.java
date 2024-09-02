@@ -19,7 +19,7 @@ public class Main {
         DatabaseInitializer<DSLContext> initializer = new SQLDatabaseInitializer(connection);
         initializer.init();
         PrimeDAO primeDAO = new SQLPrimeDAO(connection);
-        PrimeService primeService = new CachedPrimeService(64_000, 800, primeDAO);
+        PrimeService primeService = new CachedPrimeService(64_000, 1600, primeDAO);
         PrimeFinder finder = new PrimeFinder(primeService);
 
         Engine engine = new Engine(finder, 256);

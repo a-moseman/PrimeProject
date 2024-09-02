@@ -42,11 +42,13 @@ public class SQLPrimeDAO implements PrimeDAO {
                     .values(prime)
             );
         }
-        connection.get().batch(batch).execute();
-        connection.get()
-                .update(table("last"))
-                .set(VALUE, primes.get(primes.size() - 1))
-                .execute();
+        connection.get().transaction(ctx -> {
+            connection.get().batch(batch).execute();
+            connection.get()
+                    .update(table("last"))
+                    .set(VALUE, primes.get(primes.size() - 1))
+                    .execute();
+        });
     }
 
     @Override
@@ -68,8 +70,6 @@ public class SQLPrimeDAO implements PrimeDAO {
         Result<Record> result = connection.get()
                 .selectFrom(PRIMES)
                 .where(range)
-                //.limit(length)
-                //.offset(offset)
                 .fetch();
         List<BigInteger> primes = new ArrayList<>();
         result.forEach(record -> {
