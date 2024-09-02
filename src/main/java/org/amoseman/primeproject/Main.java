@@ -5,7 +5,8 @@ import org.amoseman.primeproject.storage.DatabaseConnection;
 import org.amoseman.primeproject.storage.DatabaseInitializer;
 import org.amoseman.primeproject.storage.dao.PrimeDAO;
 import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
-import org.amoseman.primeproject.storage.PrimeService;
+import org.amoseman.primeproject.storage.service.CachedPrimeService;
+import org.amoseman.primeproject.storage.service.PrimeService;
 
 import java.math.BigInteger;
 import java.util.Locale;
@@ -17,7 +18,7 @@ public class Main {
         DatabaseInitializer initializer = new DatabaseInitializer(connection);
         initializer.init();
         PrimeDAO primeDAO = new SQLPrimeDAO(connection);
-        PrimeService primeService = new PrimeService(64_000, 16_000, primeDAO);
+        PrimeService primeService = new CachedPrimeService(64_000, 16_000, primeDAO);
         PrimeFinder finder = new PrimeFinder(primeService);
 
         Processor processor = new Processor(finder, 256, 8_000);

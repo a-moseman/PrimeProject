@@ -1,7 +1,10 @@
 package org.amoseman.primeproject.storage;
 
 import org.amoseman.primeproject.discovery.PrimeFinder;
+import org.amoseman.primeproject.storage.dao.PrimeDAO;
 import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
+import org.amoseman.primeproject.storage.service.CachedPrimeService;
+import org.amoseman.primeproject.storage.service.PrimeService;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -60,14 +63,14 @@ class PrimeFinderTest {
         DatabaseConnection connection = new DatabaseConnection("jdbc:sqlite:test.db");
         DatabaseInitializer initializer = new DatabaseInitializer(connection);
         initializer.init();
-        SQLPrimeDAO dao = new SQLPrimeDAO(connection);
+        PrimeDAO dao = new SQLPrimeDAO(connection);
 
         List<BigInteger> first = dao.get(0, 2);
         if (!(first.contains(BigInteger.TWO) && first.contains(BigInteger.valueOf(3)))) {
             fail("Does not contain starting 2 and 3");
         }
 
-        PrimeService service = new PrimeService(69, 36, dao);
+        PrimeService service = new CachedPrimeService(69, 36, dao);
         PrimeFinder finder = new PrimeFinder(service);
         finder.find(count - 2, 46);
         // compare actual to expected

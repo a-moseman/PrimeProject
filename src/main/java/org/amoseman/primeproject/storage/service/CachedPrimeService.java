@@ -1,21 +1,21 @@
-package org.amoseman.primeproject.storage;
+package org.amoseman.primeproject.storage.service;
 
 import org.amoseman.primeproject.storage.dao.PrimeDAO;
-import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
+import org.amoseman.primeproject.storage.service.PrimeService;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrimeService {
+public class CachedPrimeService implements PrimeService {
     private final int maxCacheSize;
     private final int maxDiscoverySize;
     private final PrimeDAO primeDAO;
     private final BigInteger[] cache;
     private int cacheSize;
-    private List<byte[]> discovered;
+    private final List<byte[]> discovered;
 
-    public PrimeService(int maxCacheSize, int maxDiscoverySize, PrimeDAO primeDAO) {
+    public CachedPrimeService(int maxCacheSize, int maxDiscoverySize, PrimeDAO primeDAO) {
         this.maxCacheSize = maxCacheSize;
         this.maxDiscoverySize = maxDiscoverySize;
         this.primeDAO = primeDAO;
@@ -29,6 +29,7 @@ public class PrimeService {
         this.discovered = new ArrayList<>();
     }
 
+    @Override
     public void add(BigInteger prime) {
         if (cacheSize < maxCacheSize) {
             cache[cacheSize] = prime;
@@ -36,15 +37,17 @@ public class PrimeService {
         }
         discovered.add(prime.toByteArray());
         if (discovered.size() == maxDiscoverySize) {
-            forceWrite();
+            write();
         }
     }
 
-    public void forceWrite() {
+    @Override
+    public void write() {
         primeDAO.add(discovered);
         discovered.clear();
     }
 
+    @Override
     public BigInteger last() {
         if (discovered.isEmpty()) {
             return primeDAO.last();
@@ -52,16 +55,17 @@ public class PrimeService {
         return new BigInteger(discovered.get(discovered.size() - 1));
     }
 
-    public List<BigInteger> get(final int offset, final int length) {
+    @Override
+    public List<BigInteger> get(long offset, long length) {
         List<BigInteger> primes = new ArrayList<>();
-        for (int i = offset; i < cacheSize; i++) {
+        for (int i = (int) offset; i < cacheSize; i++) {
             primes.add(cache[i]);
         }
         if (primes.size() == length) {
             return primes;
         }
-        int effectiveOffset = offset + cacheSize;
-        int effectiveLength = length - cacheSize;
+        long effectiveOffset = offset + cacheSize;
+        long effectiveLength = length - cacheSize;
         primes.addAll(primeDAO.get(effectiveOffset, effectiveLength));
         int i = 0;
         while (primes.size() < length && i < discovered.size()) {

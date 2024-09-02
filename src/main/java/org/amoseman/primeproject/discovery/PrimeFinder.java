@@ -1,6 +1,6 @@
 package org.amoseman.primeproject.discovery;
 
-import org.amoseman.primeproject.storage.PrimeService;
+import org.amoseman.primeproject.storage.service.PrimeService;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -25,7 +25,7 @@ public class PrimeFinder {
             }
             number = number.add(BigInteger.TWO);
         }
-        primeService.forceWrite();
+        primeService.write();
     }
 
     private boolean isPrime(BigInteger number, int chunkSize) {
