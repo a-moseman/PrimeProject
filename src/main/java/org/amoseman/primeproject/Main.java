@@ -3,7 +3,8 @@ package org.amoseman.primeproject;
 import org.amoseman.primeproject.discovery.PrimeFinder;
 import org.amoseman.primeproject.storage.DatabaseConnection;
 import org.amoseman.primeproject.storage.DatabaseInitializer;
-import org.amoseman.primeproject.storage.PrimeDAO;
+import org.amoseman.primeproject.storage.dao.PrimeDAO;
+import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
 import org.amoseman.primeproject.storage.PrimeService;
 
 import java.math.BigInteger;
@@ -15,7 +16,7 @@ public class Main {
         DatabaseConnection connection = new DatabaseConnection("jdbc:sqlite:primes.db");
         DatabaseInitializer initializer = new DatabaseInitializer(connection);
         initializer.init();
-        PrimeDAO primeDAO = new PrimeDAO(connection);
+        PrimeDAO primeDAO = new SQLPrimeDAO(connection);
         PrimeService primeService = new PrimeService(64_000, 16_000, primeDAO);
         PrimeFinder finder = new PrimeFinder(primeService);
 

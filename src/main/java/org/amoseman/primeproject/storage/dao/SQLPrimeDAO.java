@@ -1,5 +1,6 @@
-package org.amoseman.primeproject.storage;
+package org.amoseman.primeproject.storage.dao;
 
+import org.amoseman.primeproject.storage.DatabaseConnection;
 import org.jooq.*;
 import org.jooq.Record;
 
@@ -10,15 +11,16 @@ import java.util.List;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.table;
 
-public class PrimeDAO {
+public class SQLPrimeDAO implements PrimeDAO {
     private final Table<Record> PRIMES = table("primes");
     private final Field<Object> VALUE = field("value");
     private final DatabaseConnection connection;
 
-    public PrimeDAO(DatabaseConnection connection) {
+    public SQLPrimeDAO(DatabaseConnection connection) {
         this.connection = connection;
     }
 
+    @Override
     public void add(BigInteger prime) {
         connection.get()
                 .insertInto(PRIMES, VALUE)
@@ -30,6 +32,7 @@ public class PrimeDAO {
                 .execute();
     }
 
+    @Override
     public void add(List<byte[]> primes) {
         List<InsertValuesStep1<?, ?>> batch = new ArrayList<>();
         for (byte[] prime : primes) {
@@ -45,6 +48,7 @@ public class PrimeDAO {
                 .execute();
     }
 
+    @Override
     public BigInteger last() {
         Result<Record> result = connection.get()
                 .selectFrom(table("last"))
@@ -57,7 +61,8 @@ public class PrimeDAO {
         return new BigInteger(bytes);
     }
 
-    public List<BigInteger> get(int offset, int length) {
+    @Override
+    public List<BigInteger> get(long offset, long length) {
         Result<Record> result = connection.get()
                 .selectFrom(PRIMES)
                 .limit(length)
@@ -72,6 +77,7 @@ public class PrimeDAO {
         return primes;
     }
 
+    @Override
     public long discovered() {
         return connection.get()
                 .fetchCount(PRIMES);

@@ -1,5 +1,8 @@
 package org.amoseman.primeproject.storage;
 
+import org.amoseman.primeproject.storage.dao.PrimeDAO;
+import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;

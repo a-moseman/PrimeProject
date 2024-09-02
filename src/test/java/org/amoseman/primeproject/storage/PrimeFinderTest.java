@@ -1,6 +1,7 @@
 package org.amoseman.primeproject.storage;
 
 import org.amoseman.primeproject.discovery.PrimeFinder;
+import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -59,7 +60,7 @@ class PrimeFinderTest {
         DatabaseConnection connection = new DatabaseConnection("jdbc:sqlite:test.db");
         DatabaseInitializer initializer = new DatabaseInitializer(connection);
         initializer.init();
-        PrimeDAO dao = new PrimeDAO(connection);
+        SQLPrimeDAO dao = new SQLPrimeDAO(connection);
 
         List<BigInteger> first = dao.get(0, 2);
         if (!(first.contains(BigInteger.TWO) && first.contains(BigInteger.valueOf(3)))) {
