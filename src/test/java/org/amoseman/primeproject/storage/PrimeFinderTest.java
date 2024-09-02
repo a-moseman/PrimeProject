@@ -3,6 +3,8 @@ package org.amoseman.primeproject.storage;
 import org.amoseman.primeproject.discovery.PrimeFinder;
 import org.amoseman.primeproject.storage.dao.PrimeDAO;
 import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
+import org.amoseman.primeproject.storage.init.SQLDatabaseConnection;
+import org.amoseman.primeproject.storage.init.DatabaseInitializer;
 import org.amoseman.primeproject.storage.service.CachedPrimeService;
 import org.amoseman.primeproject.storage.service.PrimeService;
 import org.junit.jupiter.api.Test;
@@ -60,7 +62,7 @@ class PrimeFinderTest {
         int count = 200;
         List<Integer> expected = generateExpectedPrimes(count);
         new File("test.db").deleteOnExit();
-        DatabaseConnection connection = new DatabaseConnection("jdbc:sqlite:test.db");
+        SQLDatabaseConnection connection = new SQLDatabaseConnection("jdbc:sqlite:test.db");
         DatabaseInitializer initializer = new DatabaseInitializer(connection);
         initializer.init();
         PrimeDAO dao = new SQLPrimeDAO(connection);

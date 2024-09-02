@@ -1,12 +1,14 @@
 package org.amoseman.primeproject;
 
 import org.amoseman.primeproject.discovery.PrimeFinder;
-import org.amoseman.primeproject.storage.DatabaseConnection;
-import org.amoseman.primeproject.storage.DatabaseInitializer;
+import org.amoseman.primeproject.storage.init.DatabaseConnection;
+import org.amoseman.primeproject.storage.init.SQLDatabaseConnection;
+import org.amoseman.primeproject.storage.init.DatabaseInitializer;
 import org.amoseman.primeproject.storage.dao.PrimeDAO;
 import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
 import org.amoseman.primeproject.storage.service.CachedPrimeService;
 import org.amoseman.primeproject.storage.service.PrimeService;
+import org.jooq.DSLContext;
 
 import java.math.BigInteger;
 import java.util.Locale;
@@ -14,7 +16,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        DatabaseConnection connection = new DatabaseConnection("jdbc:sqlite:primes.db");
+        DatabaseConnection<DSLContext> connection = new SQLDatabaseConnection("jdbc:sqlite:primes.db");
         DatabaseInitializer initializer = new DatabaseInitializer(connection);
         initializer.init();
         PrimeDAO primeDAO = new SQLPrimeDAO(connection);

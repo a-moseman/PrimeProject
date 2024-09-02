@@ -1,5 +1,6 @@
-package org.amoseman.primeproject.storage;
+package org.amoseman.primeproject.storage.init;
 
+import org.jooq.DSLContext;
 
 import java.math.BigInteger;
 
@@ -8,9 +9,9 @@ import static org.jooq.impl.DSL.table;
 import static org.jooq.impl.SQLDataType.*;
 
 public class DatabaseInitializer {
-    private final DatabaseConnection connection;
+    private final DatabaseConnection<DSLContext> connection;
 
-    public DatabaseInitializer(DatabaseConnection connection) {
+    public DatabaseInitializer(DatabaseConnection<DSLContext> connection) {
         this.connection = connection;
     }
 

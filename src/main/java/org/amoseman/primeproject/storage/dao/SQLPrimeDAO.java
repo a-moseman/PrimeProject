@@ -1,6 +1,6 @@
 package org.amoseman.primeproject.storage.dao;
 
-import org.amoseman.primeproject.storage.DatabaseConnection;
+import org.amoseman.primeproject.storage.init.DatabaseConnection;
 import org.jooq.*;
 import org.jooq.Record;
 
@@ -14,9 +14,9 @@ import static org.jooq.impl.DSL.table;
 public class SQLPrimeDAO implements PrimeDAO {
     private final Table<Record> PRIMES = table("primes");
     private final Field<Object> VALUE = field("value");
-    private final DatabaseConnection connection;
+    private final DatabaseConnection<DSLContext> connection;
 
-    public SQLPrimeDAO(DatabaseConnection connection) {
+    public SQLPrimeDAO(DatabaseConnection<DSLContext> connection) {
         this.connection = connection;
     }
 
