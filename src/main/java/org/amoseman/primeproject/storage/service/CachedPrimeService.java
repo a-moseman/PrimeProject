@@ -5,6 +5,7 @@ import org.amoseman.primeproject.storage.service.PrimeService;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CachedPrimeService implements PrimeService {
@@ -57,10 +58,7 @@ public class CachedPrimeService implements PrimeService {
 
     @Override
     public List<BigInteger> get(long offset, long length) {
-        List<BigInteger> primes = new ArrayList<>();
-        for (int i = (int) offset; i < cacheSize; i++) {
-            primes.add(cache[i]);
-        }
+        List<BigInteger> primes = new ArrayList<>(Arrays.asList(cache).subList((int) offset, cacheSize));
         if (primes.size() == length) {
             return primes;
         }
@@ -73,5 +71,22 @@ public class CachedPrimeService implements PrimeService {
             primes.add(prime);
         }
         return primes;
+    }
+
+    @Override
+    public BigInteger get(long index) {
+        if (index < cacheSize) {
+            return cache[(int) index];
+        }
+        long effectiveIndex = index - cacheSize;
+        List<BigInteger> primes = primeDAO.get(index, 1);
+        if (primes.size() == 1) {
+            return primes.get(0);
+        }
+        effectiveIndex = index - primeDAO.discovered();
+        if (effectiveIndex < discovered.size()) {
+            return new BigInteger(discovered.get((int) effectiveIndex));
+        }
+        return null;
     }
 }

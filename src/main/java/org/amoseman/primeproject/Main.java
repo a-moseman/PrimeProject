@@ -22,7 +22,7 @@ public class Main {
         PrimeService primeService = new CachedPrimeService(64_000, 800, primeDAO);
         PrimeFinder finder = new PrimeFinder(primeService);
 
-        Engine engine = new Engine(finder, 256, 1024);
+        Engine engine = new Engine(finder, 256);
         Thread thread = new Thread(engine);
         thread.start();
         UI.run(engine, primeDAO);

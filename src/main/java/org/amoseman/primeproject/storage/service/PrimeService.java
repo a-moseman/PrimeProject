@@ -31,4 +31,6 @@ public interface PrimeService {
      * @return the primes in the range.
      */
     List<BigInteger> get(long offset, long length);
+
+    BigInteger get(long index);
 }

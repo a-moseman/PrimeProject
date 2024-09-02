@@ -3,7 +3,6 @@ package org.amoseman.primeproject.discovery;
 import org.amoseman.primeproject.storage.service.PrimeService;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public class PrimeFinder {
     private final PrimeService primeService;
@@ -12,14 +11,11 @@ public class PrimeFinder {
         this.primeService = primeService;
     }
 
-    public void find(int n, int chunkSize) {
-        if (chunkSize <= 0) {
-            throw new IllegalArgumentException("Chunk size must be greater than 0");
-        }
+    public void find(int n) {
         int discovered = 0;
         BigInteger number = primeService.last().add(BigInteger.TWO);
         while (discovered < n) {
-            if (isPrime(number, chunkSize)) {
+            if (isPrime(number)) {
                 primeService.add(number);
                 discovered++;
             }
@@ -28,20 +24,18 @@ public class PrimeFinder {
         primeService.write();
     }
 
-    private boolean isPrime(BigInteger number, int chunkSize) {
+    private boolean isPrime(BigInteger number) {
         BigInteger sqrt = number.sqrt();
         int offset = 1;
-        List<BigInteger> primes;
-        while (!(primes = primeService.get(offset, chunkSize)).isEmpty()) {
-            for (BigInteger prime : primes) {
-                if (prime.compareTo(sqrt) > 0) {
-                    return true;
-                }
-                if (number.mod(prime).compareTo(BigInteger.ZERO) == 0) {
-                    return false;
-                }
+        BigInteger prime;
+        while ((prime = primeService.get(offset)) != null) {
+            if (prime.compareTo(sqrt) > 0) {
+                return true;
             }
-            offset += chunkSize;
+            if (number.mod(prime).compareTo(BigInteger.ZERO) == 0) {
+                return false;
+            }
+            offset++;
         }
         return true;
     }

@@ -77,7 +77,7 @@ class PrimeFinderTest {
 
         PrimeService service = new CachedPrimeService(69, 36, dao);
         PrimeFinder finder = new PrimeFinder(service);
-        finder.find(count - 2, 46);
+        finder.find(count - 2);
         // compare actual to expected
         List<BigInteger> actualService = service.get(0, count);
         List<BigInteger> actualDAO = dao.get(0, count);
