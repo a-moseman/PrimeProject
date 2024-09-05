@@ -1,6 +1,5 @@
 package org.amoseman.primeproject;
 
-import org.amoseman.primeproject.discovery.BasicPrimeFinder;
 import org.amoseman.primeproject.discovery.PrimeFinder;
 import org.amoseman.primeproject.discovery.ThreadedPrimeFinder;
 import org.amoseman.primeproject.engine.Engine;

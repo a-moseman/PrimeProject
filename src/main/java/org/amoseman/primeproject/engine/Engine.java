@@ -1,6 +1,5 @@
 package org.amoseman.primeproject.engine;
 
-import org.amoseman.primeproject.discovery.BasicPrimeFinder;
 import org.amoseman.primeproject.discovery.PrimeFinder;
 
 public class Engine implements Runnable {

@@ -62,7 +62,7 @@ public class ThreadedPrimeFinder implements PrimeFinder {
         }
     }
 
-    class Worker implements Callable<List<BigInteger>> {
+    static class Worker implements Callable<List<BigInteger>> {
         private final PrimeService service;
         private final BigInteger min;
         private final BigInteger max;
