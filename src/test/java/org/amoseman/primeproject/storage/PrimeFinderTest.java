@@ -64,13 +64,13 @@ class PrimeFinderTest {
 
     @Test
     void test() {
-        int count = 200;
+        int count = 1000;
         List<Integer> expected = generateExpectedPrimes(count);
         new File("test.db").deleteOnExit();
         DatabaseConnection<DSLContext> connection = new SQLDatabaseConnection("jdbc:sqlite:test.db");
         DatabaseInitializer<DSLContext> initializer = new SQLDatabaseInitializer(connection);
         initializer.init();
-        PrimeDAO dao = new SQLPrimeDAO(connection);
+        PrimeDAO<DSLContext> dao = new SQLPrimeDAO(connection);
 
         List<BigInteger> first = dao.get(0, 2);
         if (!(first.contains(BigInteger.TWO) && first.contains(BigInteger.valueOf(3)))) {
