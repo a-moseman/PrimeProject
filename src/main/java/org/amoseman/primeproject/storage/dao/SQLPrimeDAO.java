@@ -11,14 +11,13 @@ import java.util.List;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.table;
 
-public class SQLPrimeDAO implements PrimeDAO {
+public class SQLPrimeDAO extends PrimeDAO<DSLContext> {
     private final Table<Record> PRIMES = table("primes");
     private final Field<Object> ID = field("id");
     private final Field<Object> VALUE = field("value");
-    private final DatabaseConnection<DSLContext> connection;
 
     public SQLPrimeDAO(DatabaseConnection<DSLContext> connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package org.amoseman.primeproject.storage.service;
 
 import org.amoseman.primeproject.storage.dao.PrimeDAO;
-import org.amoseman.primeproject.storage.service.PrimeService;
+import org.jooq.DSLContext;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -11,12 +11,12 @@ import java.util.List;
 public class CachedPrimeService implements PrimeService {
     private final int maxCacheSize;
     private final int maxDiscoverySize;
-    private final PrimeDAO primeDAO;
+    private final PrimeDAO<DSLContext> primeDAO;
     private final BigInteger[] cache;
     private int cacheSize;
     private final List<byte[]> discovered;
 
-    public CachedPrimeService(int maxCacheSize, int maxDiscoverySize, PrimeDAO primeDAO) {
+    public CachedPrimeService(int maxCacheSize, int maxDiscoverySize, PrimeDAO<DSLContext> primeDAO) {
         this.maxCacheSize = maxCacheSize;
         this.maxDiscoverySize = maxDiscoverySize;
         this.primeDAO = primeDAO;
