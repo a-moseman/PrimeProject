@@ -7,6 +7,15 @@ SQLite
 
 Jooq
 
+## CLI
+This program provides a CLI for control during runtime. Commands are not case-sensitive.
+### Commands
+<pre>
+- EXIT, QUIT, STOP	- gracefully stops the program.
+- STATS			- lists the total number of primes and the last prime discovered.
+- RUNTIME		- provides the runtime of the program in the format of hh:mm:ss.
+</pre>
+
 ## Implementation
 ### Discovery
 The list of discovered primes, upon this programs first run, is initialized with the primes 2 and 3. Each prime after is discovered in sequence, skipping over even numbers. Checking for primality is done naively, checking a candidate number n against all primes in the range [3, sqrt(n)], using modulus to determine if it is evenly divisible by any of them. Numbers are representing using [BigInteger](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html).
