@@ -1,6 +1,6 @@
 # Prime Project
 
-A Java 17 project for generating prime numbers. 
+A Java 17 program for generating prime numbers. 
 
 ## Dependencies
 SQLite
