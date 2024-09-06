@@ -16,6 +16,9 @@ This program provides a CLI for control during runtime. Commands are not case-se
 - RUNTIME		- provides the runtime of the program in the format of hh:mm:ss.
 </pre>
 
+## Results
+With this program, I have generated 62,244,786 primes. The last prime generated is 1,237,457,539. The size of the SQLite datbase file is 873,222,144 bytes.
+
 ## Implementation
 ### Discovery
 The list of discovered primes, upon this programs first run, is initialized with the primes 2 and 3. Each prime after is discovered in sequence, skipping over even numbers. Checking for primality is done naively, checking a candidate number n against all primes in the range [3, sqrt(n)], using modulus to determine if it is evenly divisible by any of them. Numbers are representing using [BigInteger](https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html).
