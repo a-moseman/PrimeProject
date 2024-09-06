@@ -4,7 +4,6 @@ import org.amoseman.primeproject.storage.service.PrimeService;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -89,7 +88,6 @@ public class ThreadedPrimeFinder implements PrimeFinder {
             return true;
         }
 
-        @Override
         public List<BigInteger> call() throws Exception {
             List<BigInteger> discovered = new ArrayList<>();
             BigInteger current = min.add(BigInteger.ZERO);

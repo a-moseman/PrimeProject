@@ -11,7 +11,7 @@ import org.amoseman.primeproject.storage.dao.PrimeDAO;
 import org.amoseman.primeproject.storage.dao.SQLPrimeDAO;
 import org.amoseman.primeproject.storage.service.CachedPrimeService;
 import org.amoseman.primeproject.storage.service.PrimeService;
-import org.amoseman.primeproject.ui.UI;
+import org.amoseman.primeproject.ui.CLI;
 import org.jooq.DSLContext;
 
 public class Main {
@@ -19,13 +19,14 @@ public class Main {
         DatabaseConnection<DSLContext> connection = new SQLDatabaseConnection("jdbc:sqlite:primes.db");
         DatabaseInitializer<DSLContext> initializer = new SQLDatabaseInitializer(connection);
         initializer.init();
-        PrimeDAO primeDAO = new SQLPrimeDAO(connection);
+        PrimeDAO<DSLContext> primeDAO = new SQLPrimeDAO(connection);
         PrimeService primeService = new CachedPrimeService(64_000, 32_000, primeDAO);
         PrimeFinder finder = new ThreadedPrimeFinder(primeService, 10, 2_000);
 
         Engine engine = new Engine(finder, 20_000);
         Thread thread = new Thread(engine);
         thread.start();
-        UI.run(engine, primeDAO);
+        CLI cli = new CLI(engine, primeDAO);
+        cli.run();
     }
 }
